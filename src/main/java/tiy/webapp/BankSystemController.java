@@ -24,6 +24,9 @@ public class BankSystemController {
         return "home";
     }
 
+
+
+
     @RequestMapping(path = "/customerList", method = RequestMethod.GET)
     public String getCustomerList(HttpSession session, Model model, String bankID) {
         setCommonAttributes(session, model);
@@ -65,7 +68,7 @@ public class BankSystemController {
     // call this method at the beginning of every controller to make sure the
     // right items are set on the model ...
     public void setCommonAttributes(HttpSession session, Model model) {
-        model.addAttribute("name", session.getAttribute("userName"));
+        model.addAttribute("name", session.getAttribute("use  rName"));
     }
 
 }

@@ -47,7 +47,7 @@ public class Bank {
     public Bank(String bankName, String bankAddress) {
         this.bankName = bankName;
         this.bankStreetAddress = bankAddress;
-        initBank();;
+        initBank();
     }
 
     public void save() {
