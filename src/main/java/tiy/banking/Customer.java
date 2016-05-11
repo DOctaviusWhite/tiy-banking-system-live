@@ -7,9 +7,11 @@ import java.util.HashMap;
  */
 public class Customer extends Person {
     private HashMap<String, BankAccount> bankAccounts = new HashMap<String, BankAccount>();
+    public boolean isaddName = false;
 
     public Customer() {
         super();
+        isaddName = true;
         System.out.println("Customer()");
     }
 

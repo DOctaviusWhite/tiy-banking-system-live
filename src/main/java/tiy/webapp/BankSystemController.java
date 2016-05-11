@@ -19,6 +19,7 @@ public class BankSystemController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String getHome(HttpSession session, Model model) {
         setCommonAttributes(session, model);
+        model.addAttribute("myErrorMessage", "This is an error message from the controller!");
         model.addAttribute("bankList", Bank.retrieveAllBanks());
 
         return "home";
@@ -29,17 +30,47 @@ public class BankSystemController {
 
     @RequestMapping(path = "/customerList", method = RequestMethod.GET)
     public String getCustomerList(HttpSession session, Model model, String bankID) {
+        model.addAttribute("myCustomerListErrorMessage", "unknown bank id");
         setCommonAttributes(session, model);
+
+        if (bankID == null || bankID.isEmpty()) {
+            model.addAttribute("myCustomerListErrorMessage", "Bank ID Required");
+            model.addAttribute("bank", new Bank());
+            model.addAttribute("customerList", null);
+        } else if (session.getAttribute("createCustomerError") != null) {
+            model.addAttribute("myCustomerListErrorMessage", session.getAttribute("createCustomerError"));
+            model.addAttribute("bank", new Bank());
+            model.addAttribute("customerList", null);
+            session.removeAttribute("createCustomerError");
+
+
         Bank bank = Bank.retrieve(bankID);
         model.addAttribute("bank", bank);
         System.out.println("There are " + bank.getBankCustomers().size() + " customers in the current bank");
         model.addAttribute("customerList", bank.getBankCustomers().values());
+
+        } else {
+            Bank bank = Bank.retrieve(bankID);
+
+            model.addAttribute("bank", bank);
+            System.out.println("There are " + bank.getBankCustomers().size() + " customers in the current bank");
+            model.addAttribute("customerList", bank.getBankCustomers().values());
+        }
+
+
         return "customerList";
     }
 
     @RequestMapping(path = "/accountList", method = RequestMethod.GET)
     public String getAccountList(HttpSession session, Model model, String bankID, String customerEmailAddress) {
         setCommonAttributes(session, model);
+        model.addAttribute("oVERDRAFT", "your account is over drawn");
+
+
+
+
+
+
         Bank bank = Bank.retrieve(bankID);
         Customer customer = bank.getBankCustomers().get(customerEmailAddress);
         model.addAttribute("bank", bank);
@@ -51,6 +82,8 @@ public class BankSystemController {
     @RequestMapping(path = "/accountDetails", method = RequestMethod.GET)
     public String getAccountDetails(HttpSession session, Model model, String bankID, String customerEmailAddress, String accountID) {
         setCommonAttributes(session, model);
+        model.addAttribute("oVERDRAFT", "your account is over drawn");
+
 
         Bank bank = Bank.retrieve(bankID);
         Customer customer = bank.getBankCustomers().get(customerEmailAddress);

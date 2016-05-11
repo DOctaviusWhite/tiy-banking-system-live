@@ -7,6 +7,7 @@ public class BankAccount {
     private String accountID;
     private double accountBalance;
     public final static String DEFAULT_ACCOUNT_ID = "Default";
+    public boolean mybank = false;
 
     public BankAccount() {
         System.out.println("BankAccount()");
